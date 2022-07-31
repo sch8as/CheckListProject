@@ -27,7 +27,15 @@ class RoleAndAdminSeeder extends Seeder
             'password' => bcrypt('adminxxx'),
             'email' => 'super@admin.com'
         ]);
-
         $admin->assignRole('admin');
+
+        $moder = User::create([
+            'name' => 'full_moder',
+            'password' => bcrypt('moderator'),
+            'email' => 'full@moder.com'
+        ]);
+        $moder->assignRole('moderator');
+        $moder->assignRole('list_limiter');
+        $moder->assignRole('list_reader');
     }
 }
