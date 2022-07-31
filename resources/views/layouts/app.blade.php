@@ -47,7 +47,7 @@
 
                             @hasanyrole('admin|list_reader')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('admin_lists_index')}}">Read lists</a>
+                                    <a class="nav-link" href="{{route('admin_lists_index')}}">Admin lists</a>
                                 </li>
                             @endhasanyrole
 

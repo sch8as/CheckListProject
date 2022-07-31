@@ -25,19 +25,19 @@
         <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('users/update_roles/' . $user->id)}}">
             @method('PATCH')
             @csrf
-            <div class="form-check form-switch">
+            <div class="mb-3 form-check form-switch">
               <input class="form-check-input" type="checkbox" id="is_list_reader" name="is_list_reader" {{($roles->contains('list_reader'))?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckDefault">Can read user's lists</label>
             </div>
-            <div class="form-check form-switch">
+            <div class="mb-3 form-check form-switch">
               <input class="form-check-input" type="checkbox" id="is_list_limiter" name="is_list_limiter" {{($roles->contains('list_limiter'))?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckChecked">Can limit user's lists</label>
             </div>
-            <div class="form-check form-switch">
+            <div class="mb-3 form-check form-switch">
               <input class="form-check-input" type="checkbox" id="is_moderator" name="is_moderator" {{($roles->contains('moderator'))?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckChecked2">Can ban users</label>
             </div>
-            <div class="form-check form-switch">
+            <div class="mb-3 form-check form-switch">
               <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin" {{($roles->contains('admin'))?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckChecked3">Can control admins, moderators, etc.</label>
             </div>
@@ -51,7 +51,7 @@
         <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('users/update_status/' . $user->id)}}">
             @method('PATCH')
             @csrf
-            <div class="form-check form-switch">
+            <div class="mb-3 form-check form-switch">
               <input class="form-check-input" type="checkbox" id="is_banned" name="is_banned" {{($user->status == 0)?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckDefault">Is banned</label>
             </div>
