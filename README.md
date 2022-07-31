@@ -29,8 +29,11 @@ ____
 **Примечание**: лимит списков ограничивает только обычных пользователей, но не администрацию.
 ____
 ## Подготовительные действия:
-    1. php artisan migrate
-    2. php artisan db:seed --class=RoleAndAdminSeeder
+    1. Создать базу данных MySQL с сопоставлением utf8_general_ci
+    2. composer install
+    3. Создать файл .env
+    4. php artisan migrate
+    5. php artisan db:seed --class=RoleAndAdminSeeder
 ____
 ## Информация о доступах (логины/пароли и т.д.):
 ### Доступ администратора: 

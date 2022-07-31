@@ -20,7 +20,6 @@
                             ☰
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="{{ url('/get/'.$checkList->id) }}">Show</a></li>
                             <li><a class="dropdown-item" href="{{ url('/lists/edit/'.$checkList->id) }}">Edit</a></li>
                             <li><a class="dropdown-item" href="{{ url('/lists/delete/'.$checkList->id) }}">Delete</a></li>
                           </ul>
