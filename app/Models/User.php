@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     }*/
 
-    public function check_can_be_controlled_by_current_user(){
+    public function checkCanBeControlledByCurrentUser(){
         if(!Auth::user()->hasRole('admin')) {
             if($this->hasRole('admin|moderator|list_reader|list_limiter')) {
                 abort(403);

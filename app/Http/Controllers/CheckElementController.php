@@ -11,7 +11,7 @@ class CheckElementController extends Controller
     public function index($id)
     {
         $checkList = CheckList::find($id);
-        $checkList->check_current_user_is_owner();
+        $checkList->checkCurrentUserIsOwner();
         $checkElements = CheckElement::where('check_list_id', '=', $id)->orderBy('title')->get();
         return view('check_element/index', compact('checkList', 'checkElements'));
     }
@@ -20,19 +20,19 @@ class CheckElementController extends Controller
     {
 
         $checkList = CheckList::find($request->check_list_id);
-        $checkList->check_current_user_is_owner();
+        $checkList->checkCurrentUserIsOwner();
 
         $checkElementModel->create($request->all());
         return redirect()->to('elements/'.$request->check_list_id);
     }
 
-    public function update_checked(Request $request)
+    public function updateChecked(Request $request)
     {
         $id = $request->get('id');
         $checked = $request->get('checked');
 
         $element=CheckElement::find($id);
-        $element->check_current_user_is_owner();
+        $element->checkCurrentUserIsOwner();
         $element->checked=$checked;
         $element->save();
     }
@@ -40,9 +40,9 @@ class CheckElementController extends Controller
     public function destroy($id)
     {
         $element = CheckElement::find($id);
-        $element->check_current_user_is_owner();
-        $check_list_id = $element->check_list_id;
+        $element->checkCurrentUserIsOwner();
+        $checkListId = $element->check_list_id;
         $element->delete();
-        return redirect()->to('elements/'.$check_list_id);
+        return redirect()->to('elements/'.$checkListId);
     }
 }

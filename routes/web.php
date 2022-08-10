@@ -26,12 +26,12 @@ Route::group(['middleware' => ['auth']], function($router) {
     Route::get('lists/delete/{id}', [CheckListController::class, 'destroy'])->name('lists_delete');
 
 
-    Route::get('elements/{list_id}',[CheckElementController::class, 'index']);
+    Route::get('elements/{listId}',[CheckElementController::class, 'index']);
     Route::post('elements/store', [CheckElementController::class, 'store'])->name('elements_store');
     /*Route::post('elements/set_check', [CheckElementController::class, 'set_check'])->name('elements_set_check');*/
     Route::get('elements/delete/{id}', [CheckElementController::class, 'destroy'])->name('elements_delete');
     /*Route::post('elements/test', [CheckElementController::class, 'test'])->name('test');*/
-    Route::post('elements/update_checked', [CheckElementController::class, 'update_checked'])->name('elements_update_checked');
+    Route::post('elements/update_checked', [CheckElementController::class, 'updateChecked'])->name('elements_update_checked');
 });
 
 Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']], function (){
@@ -41,19 +41,19 @@ Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']]
 });
 
 Route::group(['middleware' => ['role:admin']], function (){
-    Route::patch('users/update_roles/{id}', [UserController::class, 'update_roles'])->name('users_update_roles');
+    Route::patch('users/update_roles/{id}', [UserController::class, 'updateRoles'])->name('users_update_roles');
 });
 
 Route::group(['middleware' => ['role:admin|moderator']], function (){
-    Route::patch('users/update_status/{id}', [UserController::class, 'update_status'])->name('users_update_status');
+    Route::patch('users/update_status/{id}', [UserController::class, 'updateStatus'])->name('users_update_status');
 });
 
 Route::group(['middleware' => ['role:admin|list_limiter']], function (){
-    Route::patch('users/update_list_limit/{id}', [UserController::class, 'update_list_limit'])->name('users_update_list_limit');
+    Route::patch('users/update_list_limit/{id}', [UserController::class, 'updateListLimit'])->name('users_update_list_limit');
 });
 
 Route::group(['middleware' => ['role:admin|list_reader']], function (){
-    Route::get('admin/lists', [CheckListController::class, 'index_administration'])->name('admin_lists_index');
+    Route::get('admin/lists', [CheckListController::class, 'indexAdministration'])->name('admin_lists_index');
 });
 
 Auth::routes();

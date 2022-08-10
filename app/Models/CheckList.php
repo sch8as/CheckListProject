@@ -12,14 +12,14 @@ class CheckList extends Model
 
     protected $fillable = ['title','description', 'user_id'];
 
-    public function check_current_user_is_owner()
+    public function checkCurrentUserIsOwner()
     {
-        $this->check_user_is_owner(Auth::id());
+        $this->checkUserIsOwner(Auth::id());
     }
 
-    public function check_user_is_owner($user_id)
+    public function checkUserIsOwner($userId)
     {
-        if($this->user_id != $user_id)
+        if($this->user_id != $userId)
             abort(403);
     }
 }

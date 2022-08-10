@@ -15,7 +15,7 @@ class CheckListController extends Controller
         return view('check_list.index', compact('checkLists'));
     }
 
-    public function index_administration(Request $request)
+    public function indexAdministration(Request $request)
     {
         $filter = '';
         //group_concat не используется, потому как возможено появление строки слишком большой длинны
@@ -58,9 +58,9 @@ class CheckListController extends Controller
     public function store(CheckList $checkListModel, Request $request)
     {
         $limit = Auth::user()->checklist_limit;
-        $lists_count = count(CheckList::where('user_id', '=', Auth::id())->get());
+        $listsCount = count(CheckList::where('user_id', '=', Auth::id())->get());
 
-        if($lists_count >= $limit)
+        if($listsCount >= $limit)
         {
             if(!Auth::user()->hasRole('admin|moderator|list_reader|list_limiter'))
             {
@@ -68,8 +68,8 @@ class CheckListController extends Controller
                 return view('check_list.create', compact('note'));
             }
         }
-        $current_user_id = array("user_id" => Auth::id());
-        $request = array_merge($request->all(), $current_user_id);
+        $currentUserId = array("user_id" => Auth::id());
+        $request = array_merge($request->all(), $currentUserId);
         $checkListModel->create($request);
         return redirect()->route('lists_index');
     }
@@ -77,14 +77,14 @@ class CheckListController extends Controller
     public function edit($id)
     {
         $list = CheckList::find($id);
-        $list->check_current_user_is_owner();
+        $list->checkCurrentUserIsOwner();
         return view('check_list.edit', compact('list'));
     }
 
     public function update(Request $request, $id)
     {
         $list=CheckList::find($id);
-        $list->check_current_user_is_owner();
+        $list->checkCurrentUserIsOwner();
         $list->title=$request->title;
         $list->description=$request->description;
         $list->save();
@@ -94,7 +94,7 @@ class CheckListController extends Controller
     public function destroy($id)
     {
         $list = CheckList::find($id);
-        $list->check_current_user_is_owner();
+        $list->checkCurrentUserIsOwner();
         $list->delete();
         return redirect()->route('lists_index');
     }

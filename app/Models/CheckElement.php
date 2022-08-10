@@ -11,9 +11,9 @@ class CheckElement extends Model
 
     protected $fillable = ['title','check_list_id'];
 
-    public function check_current_user_is_owner()
+    public function checkCurrentUserIsOwner()
     {
         $checkList = CheckList::find($this->check_list_id);
-        $checkList->check_current_user_is_owner();
+        $checkList->checkCurrentUserIsOwner();
     }
 }

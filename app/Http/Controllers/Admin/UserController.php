@@ -38,16 +38,16 @@ class UserController extends Controller
     {
 
         $user = User::find($id);
-        $user->check_can_be_controlled_by_current_user();
+        $user->checkCanBeControlledByCurrentUser();
         return view('admin.users.show', compact('user'));
     }
 
-    public function update_roles(Request $request, $id)
+    public function updateRoles(Request $request, $id)
     {
         $roles = [];
 
         $user = User::find($id);
-        $user->check_can_be_controlled_by_current_user();
+        $user->checkCanBeControlledByCurrentUser();
         $user->roles()->detach();
 
         if($request->is_admin) $roles[] = 'admin';
@@ -60,20 +60,20 @@ class UserController extends Controller
         return redirect()->to('users/show/'.$id);
     }
 
-    public function update_status(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
         $user = User::find($id);
-        $user->check_can_be_controlled_by_current_user();
+        $user->checkCanBeControlledByCurrentUser();
         $user->status=($request->is_banned == 'on')?(0):(1);
         $user->save();
 
         return redirect()->to('users/show/'.$id);
     }
 
-    public function update_list_limit(Request $request, $id)
+    public function updateListLimit(Request $request, $id)
     {
         $user = User::find($id);
-        $user->check_can_be_controlled_by_current_user();
+        $user->checkCanBeControlledByCurrentUser();
         $user->checklist_limit=$request->checklist_limit;
         $user->save();
 
