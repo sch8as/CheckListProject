@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckElement;
 use App\Models\CheckList;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,6 +49,13 @@ class CheckListController extends Controller
 
         $checkLists = $query->get();
         return view('admin.check_list.index', compact('checkLists', 'filter'));
+    }
+
+    public function show($id)
+    {
+        $checkList = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
+        $checkElements = CheckElement::where('check_list_id', '=', $id)->orderBy('title')->get();
+        return view('check_list/show', compact('checkList', 'checkElements'));
     }
 
     public function create()

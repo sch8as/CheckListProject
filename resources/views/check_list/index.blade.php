@@ -12,7 +12,7 @@
                     </td>
 
                     <td class="fit" scope="row">
-                        <a class="btn btn-primary" href="{{ route('elements.index', ['list_id' => $checkList->id]) }}">Show</a>
+                        <a class="btn btn-primary" href="{{ route('lists.show', ['list' => $checkList->id]) }}">Show</a>
                     </td>
                     <td class="fit" scope="row">
                         <div class="dropdown">
@@ -21,7 +21,13 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" href="{{ route('lists.edit', ['list' => $checkList->id]) }}">Edit</a></li>
-                                <li><a class="dropdown-item" href="{{ route('lists.destroy', ['list' => $checkList->id]) }}">Delete</a></li>
+                                <li>
+                                    <form action="{{ route('lists.destroy', ['list' => $checkList->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="dropdown-item" title="Delete">Delete</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </td>

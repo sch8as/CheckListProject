@@ -5,6 +5,7 @@
         <a class="btn btn-primary mb-2" href="{{route('lists.index')}}"> Back </a>
        <h2 style="margin-left: 20px">{{$checkList->title}}</h2>
     </div>
+    <p>{{$checkList->description}}</p>
 
     @if(count($checkElements))
         <table class="table table-striped">
@@ -25,7 +26,11 @@
                             </label>
                         </td>
                         <td scope="row">
-                            <a class="btn btn-primary" href="{{ route('elements.destroy', ['element' => $checkElement->id]) }}">Delete</a>
+                            <form action="{{ route('elements.destroy', ['element' => $checkElement->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-primary" title="Delete">Delete</button>
+                            </form>
                         </td>
                         <script>
                             document.getElementById('checked{{$checkElement->id}}').addEventListener('change', (event) => {

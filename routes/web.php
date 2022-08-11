@@ -18,20 +18,17 @@ use App\Http\Controllers\Admin\UserController;
 
 Route::group(['middleware' => ['auth']], function($router) {
 
-    Route::resource('lists', CheckListController::class)->only(['index','create','store','edit','update']);
-    Route::get('lists/{list}/destroy', [CheckListController::class, 'destroy'])->name('lists.destroy');
+    Route::resource('lists', CheckListController::class);
 
-    /*Route::controller(CheckListController::class)->group(function() {
-    });*/
-
-    Route::get('elements/{list_id}',[CheckElementController::class, 'index'])->name('elements.index');
-    Route::post('elements/store', [CheckElementController::class, 'store'])->name('elements.store');
-    Route::get('elements/{element}/destroy', [CheckElementController::class, 'destroy'])->name('elements.destroy');
+    Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
     Route::post('elements/update_checked', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked');
 
+    /*Route::controller(CheckElementController::class)->group(function() {
+        //Route::post('elements/store', 'store')->name('elements.store');
+    });*/
+
     Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']], function (){
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::resource('users', UserController::class)->only(['index','show']);
     });
 
     Route::group(['middleware' => ['role:admin']], function (){
