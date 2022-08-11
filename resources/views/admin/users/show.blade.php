@@ -22,7 +22,7 @@
         <h4>Set roles</h4>
         <?php $roles = $user->getRoleNames(); ?>
 
-        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('users/update_roles/' . $user->id)}}">
+        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('users.update_roles', ['user' =>$user->id]) }}">
             @method('PATCH')
             @csrf
             <div class="mb-3 form-check form-switch">
@@ -48,7 +48,7 @@
 
     @hasanyrole('admin|moderator')
         <h4>Set status</h4>
-        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('users/update_status/' . $user->id)}}">
+        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{route('users.update_status', ['user' =>$user->id])}}">
             @method('PATCH')
             @csrf
             <div class="mb-3 form-check form-switch">
@@ -63,7 +63,7 @@
 
     @hasanyrole('admin|list_limiter')
         <h4>Set checklist limit</h4>
-        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('users/update_list_limit/' . $user->id)}}">
+        <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('users.update_list_limit', ['user' =>$user->id]) }}">
             @method('PATCH')
             @csrf
             <div class="mb-3">

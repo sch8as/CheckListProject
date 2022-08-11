@@ -12,17 +12,17 @@
                     </td>
 
                     <td class="fit" scope="row">
-                        <a class="btn btn-primary" href="{{ url('elements/'.$checkList->id) }}">Show</a>
+                        <a class="btn btn-primary" href="{{ route('elements.index', ['list_id' => $checkList->id]) }}">Show</a>
                     </td>
                     <td class="fit" scope="row">
                         <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            ☰
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="{{ url('/lists/edit/'.$checkList->id) }}">Edit</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/lists/delete/'.$checkList->id) }}">Delete</a></li>
-                          </ul>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                ☰
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{{ route('lists.edit', ['list' => $checkList->id]) }}">Edit</a></li>
+                                <li><a class="dropdown-item" href="{{ route('lists.destroy', ['list' => $checkList->id]) }}">Delete</a></li>
+                            </ul>
                         </div>
                     </td>
                     <td scope="row">
@@ -38,7 +38,7 @@
         <h4>There has no lists</h4>
     @endif
 
-    <td><a class="btn btn-primary" href="{{ route('lists_create') }}">New</a></td>
+    <td><a class="btn btn-primary" href="{{ route('lists.create') }}">New</a></td>
 
 @endsection
 

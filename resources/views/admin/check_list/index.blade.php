@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ url('admin/lists/?filter=' . $filter)}}" >
+    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ route('lists.admin_index', ['filter' => $filter]) }}" >
         <div class="row">
             <div class="col">
                 <input type="text" id="filter" name="filter" class="form-control mb-3" value="{{$filter}}">
@@ -27,7 +27,7 @@
             @foreach($checkLists as $checkList)
                 <tr>
                     <td class="fit" scope="row">
-                        <a class="btn btn-primary" href="{{ url('/users/show/'.$checkList->user_id) }}">{{$checkList->name}}</a>
+                        <a class="btn btn-primary" href="{{ route('users.show', ['user' => $checkList->user_id]) }}">{{$checkList->name}}</a>
                     </td>
                     <td class="fit" scope="row">
                         {{$checkList->email}}

@@ -66,7 +66,7 @@ class UserController extends Controller
 
         $user->assignRole($roles);
 
-        return redirect()->to('users/show/'.$id);
+        return redirect()->route('users.show', ['user' => $id]);
     }
 
     public function updateStatus(Request $request, $id)
@@ -78,7 +78,7 @@ class UserController extends Controller
         $user->status=($request->is_banned == 'on')?(0):(1);
         $user->save();
 
-        return redirect()->to('users/show/'.$id);
+        return redirect()->route('users.show', ['user' => $id]);
     }
 
     public function updateListLimit(Request $request, $id)
@@ -90,7 +90,7 @@ class UserController extends Controller
         $user->checklist_limit=$request->checklist_limit;
         $user->save();
 
-        return redirect()->to('users/show/'.$id);
+        return redirect()->route('users.show', ['user' => $id]);
     }
 
     //Не уверен, можно ли помещать в контроллере данный метод

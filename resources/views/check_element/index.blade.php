@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="d-flex">
-        <a class="btn btn-primary mb-2" href="{{route('lists_index')}}"> Back </a>
+        <a class="btn btn-primary mb-2" href="{{route('lists.index')}}"> Back </a>
        <h2 style="margin-left: 20px">{{$checkList->title}}</h2>
     </div>
 
@@ -25,25 +25,25 @@
                             </label>
                         </td>
                         <td scope="row">
-                            <a class="btn btn-primary" href="{{ url('/elements/delete/'.$checkElement->id) }}">Delete</a>
+                            <a class="btn btn-primary" href="{{ route('elements.destroy', ['element' => $checkElement->id]) }}">Delete</a>
                         </td>
                         <script>
                             document.getElementById('checked{{$checkElement->id}}').addEventListener('change', (event) => {
                                 fetch_submit({{$checkElement->id}}, event.currentTarget.checked);
                             })
                         </script>
-                        {{--<td><a href="{{ url('/get/'.$checkElement->id) }}">BB</a></td>--}}
+
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        {{--{{$checkLists->links()}}--}}
+
     @else
         <h4>There has no elements</h4>
     @endif
 
-    <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('elements/store')}}">
+    <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{route('elements.store')}}">
         @csrf
         <div class="row">
             <input type="hidden" id="text" name="check_list_id" class="form-control mb-3" value="{{$checkList->id}}" >
@@ -59,7 +59,7 @@
         function fetch_submit(id, checked)
         {
             (async() => {
-                let response = await fetch('{{route('elements_update_checked')}}',{
+                let response = await fetch('{{route('elements.update_checked')}}',{
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",

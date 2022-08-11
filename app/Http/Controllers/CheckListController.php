@@ -71,7 +71,7 @@ class CheckListController extends Controller
         $currentUserId = array("user_id" => Auth::id());
         $request = array_merge($request->all(), $currentUserId);
         $checkListModel->create($request);
-        return redirect()->route('lists_index');
+        return redirect()->route('lists.index');
     }
 
     public function edit($id)
@@ -86,13 +86,13 @@ class CheckListController extends Controller
         $list->title=$request->title;
         $list->description=$request->description;
         $list->save();
-        return redirect()->route('lists_index');
+        return redirect()->route('lists.index');
     }
 
     public function destroy($id)
     {
         $list = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
         $list->delete();
-        return redirect()->route('lists_index');
+        return redirect()->route('lists.index');
     }
 }

@@ -2,7 +2,7 @@
 
  @section('content')
 
-    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ url('users/?filter=' . $filter)}}" >
+    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ route('users.index', ['filter' => $filter]) }}" >
         <div class="row">
             <div class="col">
                 <input type="text" id="filter" name="filter" class="form-control mb-3" value="{{$filter}}">
@@ -37,7 +37,7 @@
 
 
                      <td class="fit" scope="row">
-                         <a class="btn btn-primary" href="{{ url('/users/show/'.$item->id) }}">Show</a>
+                         <a class="btn btn-primary" href="{{ route('users.show', ['user' => $item->id]) }}">Show</a>
                      </td>
 
                      <td scope="row">
@@ -47,15 +47,13 @@
                         @if($item->status == 0)
                             <h4><span class="badge bg-danger">Banned</span></h4>
                         @endif
-                        {{--{{$item->roles->first()->name}}--}}
-                        {{--{{$item->getRoleNames()}}--}}
+
                      </td>
                  </tr>
              @endforeach
          </tbody>
      </table>
 
-     {{--{{$checkLists->links()}}--}}
      @else
         <h4>Users not founded</h4>
      @endif

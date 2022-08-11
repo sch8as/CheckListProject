@@ -7,10 +7,10 @@
             {{ $note }}
         </div>
     @endif
-    <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('lists/store')}}">
+    <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('lists.store') }}">
         @include('check_list._form')
     </form>
-    {{--{!! Form::close() !!}--}}
+
 
 @endsection
 

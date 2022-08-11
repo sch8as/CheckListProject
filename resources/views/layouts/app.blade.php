@@ -23,7 +23,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -36,18 +36,18 @@
                         @if (Auth::check())
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('lists_index')}}">Lists</a>
+                                <a class="nav-link" href="{{route('lists.index')}}">Lists</a>
                             </li>
 
                             @hasanyrole('admin|moderator|list_limiter|list_reader')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('users_index')}}">Users</a>
+                                    <a class="nav-link" href="{{route('users.index')}}">Users</a>
                                 </li>
                             @endhasanyrole
 
                             @hasanyrole('admin|list_reader')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('admin_lists_index')}}">Admin lists</a>
+                                    <a class="nav-link" href="{{route('lists.admin_index')}}">Admin lists</a>
                                 </li>
                             @endhasanyrole
 

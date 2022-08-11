@@ -21,7 +21,7 @@ class CheckElementController extends Controller
         $checkList = CheckList::where('user_id', '=', Auth::id())->findOrFail($request->check_list_id);
 
         $checkElementModel->create($request->all());
-        return redirect()->to('elements/'.$request->check_list_id);
+        return redirect()->route('elements.index', ['list_id' => $request->check_list_id]);
     }
 
     public function updateChecked(Request $request)
@@ -46,6 +46,6 @@ class CheckElementController extends Controller
         $checkListId = $element->check_list_id;
 
         $element->delete();
-        return redirect()->to('elements/'.$checkListId);
+        return redirect()->route('elements.index', ['list_id' => $checkListId]);
     }
 }
