@@ -76,15 +76,13 @@ class CheckListController extends Controller
 
     public function edit($id)
     {
-        $list = CheckList::find($id);
-        $list->checkCurrentUserIsOwner();
+        $list = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
         return view('check_list.edit', compact('list'));
     }
 
     public function update(Request $request, $id)
     {
-        $list=CheckList::find($id);
-        $list->checkCurrentUserIsOwner();
+        $list=CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
         $list->title=$request->title;
         $list->description=$request->description;
         $list->save();
@@ -93,8 +91,7 @@ class CheckListController extends Controller
 
     public function destroy($id)
     {
-        $list = CheckList::find($id);
-        $list->checkCurrentUserIsOwner();
+        $list = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
         $list->delete();
         return redirect()->route('lists_index');
     }

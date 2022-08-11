@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -45,19 +44,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /*public function check_can_control_this_user($user)
-    {
 
-    }*/
-
-    public function checkCanBeControlledByCurrentUser(){
-        if(!Auth::user()->hasRole('admin')) {
-            if($this->hasRole('admin|moderator|list_reader|list_limiter')) {
-                abort(403);
-            }
-        }
-        /*if(!Auth::user()->hasRole('admin|moderator|list_reader|list_limiter')) {
-            abort(403);
-        }*/
-    }
 }

@@ -28,9 +28,9 @@ Route::group(['middleware' => ['auth']], function($router) {
 
     Route::get('elements/{listId}',[CheckElementController::class, 'index']);
     Route::post('elements/store', [CheckElementController::class, 'store'])->name('elements_store');
-    /*Route::post('elements/set_check', [CheckElementController::class, 'set_check'])->name('elements_set_check');*/
+
     Route::get('elements/delete/{id}', [CheckElementController::class, 'destroy'])->name('elements_delete');
-    /*Route::post('elements/test', [CheckElementController::class, 'test'])->name('test');*/
+
     Route::post('elements/update_checked', [CheckElementController::class, 'updateChecked'])->name('elements_update_checked');
 });
 
