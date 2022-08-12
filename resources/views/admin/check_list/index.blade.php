@@ -27,24 +27,23 @@
             @foreach($checkLists as $checkList)
                 <tr>
                     <td class="fit" scope="row">
-                        <a class="btn btn-primary" href="{{ route('users.show', ['user' => $checkList->user_id]) }}">{{$checkList->name}}</a>
+                        <a class="btn btn-primary" href="{{ route('users.show', ['user' => $checkList->user->id]) }}">{{$checkList->user->name}}</a>
                     </td>
                     <td class="fit" scope="row">
-                        {{$checkList->email}}
-                        @if($checkList->status == 0)
+                        {{$checkList->user->email}}
+                        @if($checkList->user->status == 0)
                             (Banned)
                         @endif
                     </td>
 
                     <td class="fit" scope="row">
-                        {{$checkList->cl_title}}
+                        {{$checkList->title}}
                     </td>
 
-                    <td class="fit" scope="row">
-                        {{$checkList->ce_title}}
-                    </td>
                     <td scope="row">
-
+                        @foreach($checkList->elements as $element)
+                            <p>{{$element->title}}</p>
+                        @endforeach
                     </td>
                 </tr>
             @endforeach

@@ -18,43 +18,37 @@ class CheckListController extends Controller
 
     public function indexAdministration(Request $request)
     {
-        $filter = '';
-        //group_concat не используется, потому как возможено появление строки слишком большой длинны
-        /*$query = User::select('*', 'users.id as aaa', 'check_lists.title as cl_title')->selectRaw('group_concat(check_elements.title SEPARATOR  "' .'\<br\>' . '") as ce_title');*/
-        $query = User::select('*', 'users.id as aaa', 'check_lists.title as cl_title', 'check_elements.title as ce_title');
+        $query = CheckList::with('user')->with('elements');
 
-
-        if(Auth::user()->hasRole('admin'))
+        if(!Auth::user()->hasRole('admin'))
         {
-            $query->orderBy('name');
-        }
-        else
-        {
-            $query->doesntHave('roles')->orderBy('name');
-        }
-
-        $query->join('check_lists', 'check_lists.user_id', '=', 'users.id');
-        $query->join('check_elements', 'check_elements.check_list_id', '=', 'check_lists.id');
-        /*$query->groupBy('check_list_id');*/
-
-        if ($request->filled('filter')) {
-            $filter = $request->get('filter');
-            $query->where(function ($query) use ($filter) {
-                $query->where('name', 'like', "%$filter%")
-                    ->orWhere('email', 'like', "%$filter%")
-                    ->orWhere('check_lists.title', 'like', "%$filter%")
-                    ->orWhere('check_elements.title', 'like', "%$filter%");
+            $query->whereHas('user', function($query) {
+                $query->doesntHave('roles');
             });
         }
 
-        $checkLists = $query->get();
+        $filter = '';
+        if ($request->filled('filter')) {
+            $filter = $request->get('filter');
+            $query->where(function ($query) use ($filter) {
+                $query->whereHas('user', function($query) use ($filter) {
+                    $query->where('name', 'like', "%$filter%")
+                        ->orWhere('email', 'like', "%$filter%");
+                })->orWhere('check_lists.title', 'like', "%$filter%")->
+                orWhereHas('elements', function($query) use ($filter) {
+                    $query->where('title', 'like', "%$filter%");
+                });
+            });
+        }
+
+        $checkLists = $query->orderBy('title')->get();
         return view('admin.check_list.index', compact('checkLists', 'filter'));
     }
 
     public function show($id)
     {
         $checkList = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
-        $checkElements = CheckElement::where('check_list_id', '=', $id)->orderBy('title')->get();
+        $checkElements = $checkList->elements()->get();
         return view('check_list/show', compact('checkList', 'checkElements'));
     }
 
