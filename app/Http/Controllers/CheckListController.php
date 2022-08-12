@@ -12,7 +12,7 @@ class CheckListController extends Controller
 {
     public function index()
     {
-        $checkLists = CheckList::where('user_id', '=', Auth::id())->orderBy('title')->get();
+        $checkLists = Auth::user()->checkLists()->orderBy('title')->get();
         return view('check_list.index', compact('checkLists'));
     }
 
@@ -47,7 +47,7 @@ class CheckListController extends Controller
 
     public function show($id)
     {
-        $checkList = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
+        $checkList = Auth::user()->checkLists()->findOrFail($id);
         $checkElements = $checkList->elements()->get();
         return view('check_list/show', compact('checkList', 'checkElements'));
     }
@@ -60,7 +60,7 @@ class CheckListController extends Controller
     public function store(CheckList $checkListModel, Request $request)
     {
         $limit = Auth::user()->checklist_limit;
-        $listsCount = count(CheckList::where('user_id', '=', Auth::id())->get());
+        $listsCount = Auth::user()->checkLists()->count();
 
         if($listsCount >= $limit)
         {
@@ -78,13 +78,13 @@ class CheckListController extends Controller
 
     public function edit($id)
     {
-        $list = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
+        $list = Auth::user()->checkLists()->findOrFail($id);
         return view('check_list.edit', compact('list'));
     }
 
     public function update(Request $request, $id)
     {
-        $list=CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
+        $list = Auth::user()->checkLists()->findOrFail($id);
         $list->title=$request->title;
         $list->description=$request->description;
         $list->save();
@@ -93,7 +93,7 @@ class CheckListController extends Controller
 
     public function destroy($id)
     {
-        $list = CheckList::where('user_id', '=', Auth::id())->findOrFail($id);
+        $list = Auth::user()->checkLists()->findOrFail($id);
         $list->delete();
         return redirect()->route('lists.index');
     }

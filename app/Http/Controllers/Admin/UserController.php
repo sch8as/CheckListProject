@@ -11,13 +11,10 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        if(Auth::user()->hasRole('admin'))
-        {
-            $users = User::orderBy('name');
-        }
-        else
-        {
-            $users = User::doesntHave('roles')->orderBy('name');
+        $users = User::select('*');
+
+        if(!Auth::user()->hasRole('admin')) {
+            $users->doesntHave('roles');
         }
 
         $filter = '';
@@ -29,7 +26,7 @@ class UserController extends Controller
             });
         }
 
-        $users = $users->get();
+        $users = $users->orderBy('name')->get();
 
         return view('admin.users.index', compact('users', 'filter'));
     }
@@ -55,14 +52,18 @@ class UserController extends Controller
         $user->roles()->detach();
 
         //Поправить это безобразие
-        if($request->is_admin)
+        if($request->is_admin) {
             $roles[] = 'admin';
-        if($request->is_moderator)
+        }
+        if($request->is_moderator) {
             $roles[] = 'moderator';
-        if($request->is_list_reader)
+        }
+        if($request->is_list_reader) {
             $roles[] = 'list_reader';
-        if($request->is_list_limiter)
+        }
+        if($request->is_list_limiter) {
             $roles[] = 'list_limiter';
+        }
 
         $user->assignRole($roles);
 
@@ -75,7 +76,7 @@ class UserController extends Controller
 
         $this->checkCurrentUserCanControl($user);
 
-        $user->status=($request->is_banned == 'on')?(0):(1);
+        $user->status = ($request->is_banned == 'on')?(0):(1);
         $user->save();
 
         return redirect()->route('users.show', ['user' => $id]);

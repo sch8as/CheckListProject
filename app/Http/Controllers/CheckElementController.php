@@ -13,7 +13,7 @@ class CheckElementController extends Controller
 
     public function store(CheckElement $checkElementModel, Request $request)
     {
-        $checkList = CheckList::where('user_id', '=', Auth::id())->findOrFail($request->check_list_id);
+        $checkList = Auth::user()->checkLists()->findOrFail($request->check_list_id);
 
         $checkElementModel->create($request->all());
         return redirect()->route('lists.show', ['list' => $request->check_list_id]);
