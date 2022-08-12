@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckElement;
 use App\Models\CheckList;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,8 +18,7 @@ class CheckListController extends Controller
     {
         $query = CheckList::with('user')->with('elements');
 
-        if(!Auth::user()->hasRole('admin'))
-        {
+        if(!Auth::user()->hasRole('admin')) {
             $query->whereHas('user', function($query) {
                 $query->doesntHave('roles');
             });
@@ -62,14 +59,13 @@ class CheckListController extends Controller
         $limit = Auth::user()->checklist_limit;
         $listsCount = Auth::user()->checkLists()->count();
 
-        if($listsCount >= $limit)
-        {
-            if(!Auth::user()->hasRole('admin|moderator|list_reader|list_limiter'))
-            {
+        if($listsCount >= $limit) {
+            if(!Auth::user()->hasRole('admin|moderator|list_reader|list_limiter')) {
                 $note = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
                 return view('check_list.create', compact('note'));
             }
         }
+
         $currentUserId = array("user_id" => Auth::id());
         $request = array_merge($request->all(), $currentUserId);
         $checkListModel->create($request);
