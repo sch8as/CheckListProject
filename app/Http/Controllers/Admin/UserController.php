@@ -43,7 +43,6 @@ class UserController extends Controller
 
     public function updateRoles(Request $request, $id)
     {
-        $roles = [];
 
         $user = User::find($id);
 
@@ -51,19 +50,8 @@ class UserController extends Controller
 
         $user->roles()->detach();
 
-        //Поправить это безобразие
-        if($request->is_admin) {
-            $roles[] = 'admin';
-        }
-        if($request->is_moderator) {
-            $roles[] = 'moderator';
-        }
-        if($request->is_list_reader) {
-            $roles[] = 'list_reader';
-        }
-        if($request->is_list_limiter) {
-            $roles[] = 'list_limiter';
-        }
+        $rolesWhiteList = \Spatie\Permission\Models\Role::all()->pluck('name');
+        $roles = $rolesWhiteList->intersect(array_keys($request->all()));
 
         $user->assignRole($roles);
 
