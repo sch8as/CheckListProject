@@ -18,33 +18,33 @@ use App\Http\Controllers\Admin\UserController;
 
 Route::group(['middleware' => ['auth']], function($router) {
 
-    Route::resource('lists', CheckListController::class);
-
-    Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
-    Route::post('elements/update_checked', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked');
-
-    /*Route::controller(CheckElementController::class)->group(function() {
-        //Route::post('elements/store', 'store')->name('elements.store');
-    });*/
-
-    Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']], function (){
-        Route::resource('users', UserController::class)->only(['index','show']);
-    });
-
-    Route::group(['middleware' => ['role:admin']], function (){
-        Route::patch('users/{user}/update_roles', [UserController::class, 'updateRoles'])->name('users.update_roles');
-    });
-
-    Route::group(['middleware' => ['role:admin|moderator']], function (){
-        Route::patch('users/{user}/update_status', [UserController::class, 'updateStatus'])->name('users.update_status');
-    });
-
-    Route::group(['middleware' => ['role:admin|list_limiter']], function (){
-        Route::patch('users/{user}/update_list_limit', [UserController::class, 'updateListLimit'])->name('users.update_list_limit');
-    });
-
+    //Lists
     Route::group(['middleware' => ['role:admin|list_reader']], function (){
         Route::get('admin/lists', [CheckListController::class, 'indexAdministration'])->name('lists.admin_index');
+    });
+    Route::resource('lists', CheckListController::class);
+
+    //Elements
+    Route::post('elements/update_checked', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked');
+    Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
+
+    //Users
+    Route::controller(UserController::class)->group(function() {
+        Route::group(['middleware' => ['role:admin']], function (){
+            Route::patch('users/{user}/update_roles', 'updateRoles')->name('users.update_roles');
+        });
+
+        Route::group(['middleware' => ['role:admin|moderator']], function (){
+            Route::patch('users/{user}/update_status', 'updateStatus')->name('users.update_status');
+        });
+
+        Route::group(['middleware' => ['role:admin|list_limiter']], function (){
+            Route::patch('users/{user}/update_list_limit', 'updateListLimit')->name('users.update_list_limit');
+        });
+
+        Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']], function (){
+            Route::resource('users', UserController::class)->only(['index','show']);
+        });
     });
 });
 
