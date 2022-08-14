@@ -41,7 +41,7 @@
                     </td>
 
                     <td scope="row">
-                        @foreach($checkList->elements as $element)
+                        @foreach($checkList->checkElements as $element)
                             <p>{{$element->title}}</p>
                         @endforeach
                     </td>

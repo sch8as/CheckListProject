@@ -16,7 +16,7 @@ class CheckListController extends Controller
 
     public function indexAdministration(Request $request)
     {
-        $query = CheckList::with('user')->with('elements');
+        $query = CheckList::with('user')->with('checkElements');
 
         if(!Auth::user()->hasRole('admin')) {
             $query->whereHas('user', function($query) {
@@ -32,7 +32,7 @@ class CheckListController extends Controller
                     $query->where('name', 'like', "%$filter%")
                         ->orWhere('email', 'like', "%$filter%");
                 })->orWhere('check_lists.title', 'like', "%$filter%")->
-                orWhereHas('elements', function($query) use ($filter) {
+                orWhereHas('checkElements', function($query) use ($filter) {
                     $query->where('title', 'like', "%$filter%");
                 });
             });
