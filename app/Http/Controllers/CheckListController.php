@@ -45,7 +45,7 @@ class CheckListController extends Controller
     public function show($id)
     {
         $checkList = Auth::user()->checkLists()->findOrFail($id);
-        $checkElements = $checkList->elements()->get();
+        $checkElements = $checkList->checkElements()->get();
         return view('check_list/show', compact('checkList', 'checkElements'));
     }
 
