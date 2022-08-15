@@ -53,8 +53,7 @@ class UserController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $user = Auth::user()->subUsers()->findOrFail($id);
-
-        $user->status = ($request->is_banned == 'on')?(0):(1);
+        $user->status = $request->boolean('is_banned')?(User::STATUS_BANNED):(User::STATUS_OK);
         $user->save();
 
         return redirect()->route('users.show', ['user' => $id]);
