@@ -43,7 +43,7 @@ class UserController extends Controller
         $user->roles()->detach();
 
         $rolesWhiteList = \Spatie\Permission\Models\Role::all()->pluck('name');
-        $roles = $rolesWhiteList->intersect(array_keys($request->all()));
+        $roles = $rolesWhiteList->intersect($request->get('roles'));
 
         $user->assignRole($roles);
 
