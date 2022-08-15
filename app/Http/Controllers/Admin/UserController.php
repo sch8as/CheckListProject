@@ -11,11 +11,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::select('*');
-
-        if(!Auth::user()->hasRole('admin')) {
-            $users->doesntHave('roles');
-        }
+        $users = Auth::user()->subUsers();
 
         $filter = '';
         if ($request->filled('filter')) {
@@ -34,9 +30,7 @@ class UserController extends Controller
     public function show($id)
     {
 
-        $user = User::find($id);
-
-        $this->checkCurrentUserCanControl($user);
+        $user = Auth::user()->subUsers()->findOrFail($id);
 
         return view('admin.users.show', compact('user'));
     }
@@ -44,9 +38,7 @@ class UserController extends Controller
     public function updateRoles(Request $request, $id)
     {
 
-        $user = User::find($id);
-
-        $this->checkCurrentUserCanControl($user);
+        $user = Auth::user()->subUsers()->findOrFail($id);
 
         $user->roles()->detach();
 
@@ -60,9 +52,7 @@ class UserController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $user = User::find($id);
-
-        $this->checkCurrentUserCanControl($user);
+        $user = Auth::user()->subUsers()->findOrFail($id);
 
         $user->status = ($request->is_banned == 'on')?(0):(1);
         $user->save();
@@ -72,28 +62,11 @@ class UserController extends Controller
 
     public function updateListLimit(Request $request, $id)
     {
-        $user = User::find($id);
-
-        $this->checkCurrentUserCanControl($user);
+        $user = Auth::user()->subUsers()->findOrFail($id);
 
         $user->checklist_limit=$request->checklist_limit;
         $user->save();
 
         return redirect()->route('users.show', ['user' => $id]);
     }
-
-    //Не уверен, можно ли помещать в контроллере данный метод
-    private function checkCurrentUserCanControl($user)
-    {
-        if(!Auth::user()->hasRole('admin')) {
-            if($user->hasRole('admin|moderator|list_reader|list_limiter')) {
-                abort(403);
-            }
-        }
-        /*if(!Auth::user()->hasRole('admin|moderator|list_reader|list_limiter')) {
-            abort(403);
-        }*/
-    }
-
-
 }
