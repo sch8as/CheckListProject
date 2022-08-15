@@ -41,13 +41,13 @@
 
                             @hasanyrole('admin|moderator|list_limiter|list_reader')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('users.index')}}">Users</a>
+                                    <a class="nav-link" href="{{route('admin.users.index')}}">Admin users</a>
                                 </li>
                             @endhasanyrole
 
                             @hasanyrole('admin|list_reader')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('lists.admin_index')}}">Admin lists</a>
+                                    <a class="nav-link" href="{{route('admin.lists.index')}}">Admin lists</a>
                                 </li>
                             @endhasanyrole
 

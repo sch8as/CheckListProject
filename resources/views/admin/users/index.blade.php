@@ -2,7 +2,7 @@
 
  @section('content')
 
-    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ route('users.index', ['filter' => $filter]) }}" >
+    <form name="add-blog-post-form" id="add-blog-post-form" class="form-inline" method="get" action="{{ route('admin.users.index', ['filter' => $filter]) }}" >
         <div class="row">
             <div class="col">
                 <input type="text" id="filter" name="filter" class="form-control mb-3" value="{{$filter}}">
@@ -35,7 +35,7 @@
                         </td>
 
                         <td class="fit" scope="row">
-                            <a class="btn btn-primary" href="{{ route('users.show', ['user' => $user->id]) }}">Show</a>
+                            <a class="btn btn-primary" href="{{ route('admin.users.show', ['user' => $user->id]) }}">Show</a>
                         </td>
 
                         <td scope="row">

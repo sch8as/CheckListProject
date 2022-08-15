@@ -47,7 +47,7 @@ class UserController extends Controller
 
         $user->assignRole($roles);
 
-        return redirect()->route('users.show', ['user' => $id]);
+        return redirect()->route('admin.users.show', ['user' => $id]);
     }
 
     public function updateStatus(Request $request, $id)
@@ -56,7 +56,7 @@ class UserController extends Controller
         $user->status = $request->boolean('is_banned')?(User::STATUS_BANNED):(User::STATUS_OK);
         $user->save();
 
-        return redirect()->route('users.show', ['user' => $id]);
+        return redirect()->route('admin.users.show', ['user' => $id]);
     }
 
     public function updateListLimit(Request $request, $id)
@@ -66,6 +66,6 @@ class UserController extends Controller
         $user->checklist_limit=$request->checklist_limit;
         $user->save();
 
-        return redirect()->route('users.show', ['user' => $id]);
+        return redirect()->route('admin.users.show', ['user' => $id]);
     }
 }
