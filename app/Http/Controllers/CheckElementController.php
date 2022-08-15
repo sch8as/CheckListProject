@@ -23,9 +23,7 @@ class CheckElementController extends Controller
         $id = $request->get('id');
         $checked = $request->get('checked');
 
-        $element = CheckElement::whereHas('checkList', function($q){
-            $q->where('user_id', '=', Auth::id());
-        })->findOrFail($id);
+        $element = Auth::user()->checkElements()->findOrFail($id);
 
         $element->checked=$checked;
         $element->save();
@@ -33,9 +31,7 @@ class CheckElementController extends Controller
 
     public function destroy($id)
     {
-        $element = CheckElement::whereHas('checkList', function($q){
-            $q->where('user_id', '=', Auth::id());
-        })->findOrFail($id);
+        $element = Auth::user()->checkElements()->findOrFail($id);
 
         $checkListId = $element->check_list_id;
 

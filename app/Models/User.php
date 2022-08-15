@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany(CheckList::class);
     }
 
+    public function checkElements()
+    {
+        return $this->hasManyThrough(CheckElement::class, CheckList::class);
+    }
+
     public function subUsers()
     {
         if($this->hasRole('admin')) {
@@ -57,4 +62,6 @@ class User extends Authenticatable
             return User::doesntHave('roles');
         }
     }
+
+
 }
