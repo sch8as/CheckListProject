@@ -11,6 +11,8 @@ class CheckListController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('index', [self::class]);
+
         $query = CheckList::with('user')->with('checkElements');
 
         if(!Auth::user()->hasRole('admin')) {

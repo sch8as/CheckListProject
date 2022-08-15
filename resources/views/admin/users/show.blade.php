@@ -18,7 +18,7 @@
     </table>
     <br>
 
-    @role('admin')
+    @can('update-roles', App\Http\Controllers\Admin\UserController::class)
         <h4>Set roles</h4>
         <?php $roles = $user->getRoleNames(); ?>
 
@@ -44,9 +44,9 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
         <br>
-    @endrole
+    @endcan
 
-    @hasanyrole('admin|moderator')
+    @can('update-status', App\Http\Controllers\Admin\UserController::class)
         <h4>Set status</h4>
         <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{route('admin.users.update_status', ['user' =>$user->id])}}">
             @method('PATCH')
@@ -59,9 +59,9 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
         <br>
-    @endhasanyrole
+    @endcan
 
-    @hasanyrole('admin|list_limiter')
+    @can('update-list-limit', App\Http\Controllers\Admin\UserController::class)
         <h4>Set checklist limit</h4>
         <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('admin.users.update_list_limit', ['user' =>$user->id]) }}">
             @method('PATCH')
@@ -74,6 +74,6 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
         <br>
-    @endhasanyrole
+    @endcan
 
 @endsection

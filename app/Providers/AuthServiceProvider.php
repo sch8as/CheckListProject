@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CheckListController as AdminCheckListController;
+use App\Policies\Admin\UserControllerPolicy as AdminUserControllerPolicy;
+use App\Policies\Admin\CheckListControllerPolicy as AdminCheckListControllerPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        AdminUserController::class => AdminUserControllerPolicy::class,
+        AdminCheckListController::class =>AdminCheckListControllerPolicy::class
     ];
 
     /**

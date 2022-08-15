@@ -11,6 +11,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('view', [self::class]);
+
         $users = Auth::user()->subUsers();
 
         $filter = '';
@@ -29,14 +31,15 @@ class UserController extends Controller
 
     public function show($id)
     {
+        $this->authorize('view', [self::class]);
 
         $user = Auth::user()->subUsers()->findOrFail($id);
-
         return view('admin.users.show', compact('user'));
     }
 
     public function updateRoles(Request $request, $id)
     {
+        $this->authorize('update-roles', [self::class]);
 
         $user = Auth::user()->subUsers()->findOrFail($id);
 
@@ -52,6 +55,8 @@ class UserController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        $this->authorize('update-status', [self::class]);
+
         $user = Auth::user()->subUsers()->findOrFail($id);
         $user->status = $request->boolean('is_banned')?(User::STATUS_BANNED):(User::STATUS_OK);
         $user->save();
@@ -61,6 +66,8 @@ class UserController extends Controller
 
     public function updateListLimit(Request $request, $id)
     {
+        $this->authorize('update-list-limit', [self::class]);
+
         $user = Auth::user()->subUsers()->findOrFail($id);
 
         $user->checklist_limit=$request->checklist_limit;

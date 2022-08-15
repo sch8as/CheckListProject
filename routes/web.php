@@ -31,28 +31,14 @@ Route::group(['middleware' => ['auth']], function($router) {
 
         //Admin users
         Route::controller(AdminUserController::class)->group(function () {
-            Route::group(['middleware' => ['role:admin']], function () {
-                Route::patch('admin/users/{user}/update_roles', 'updateRoles')->name('users.update_roles');
-            });
-
-            Route::group(['middleware' => ['role:admin|moderator']], function () {
-                Route::patch('admin/users/{user}/update_status', 'updateStatus')->name('users.update_status');
-            });
-
-            Route::group(['middleware' => ['role:admin|list_limiter']], function () {
-                Route::patch('admin/users/{user}/update_list_limit', 'updateListLimit')->name('users.update_list_limit');
-            });
-
-            Route::group(['middleware' => ['role:admin|moderator|list_limiter|list_reader']], function () {
-                Route::resource('admin/users', AdminUserController::class)->only(['index', 'show']);
-            });
+            Route::patch('admin/users/{user}/update_roles', 'updateRoles')->name('users.update_roles');
+            Route::patch('admin/users/{user}/update_status', 'updateStatus')->name('users.update_status');
+            Route::patch('admin/users/{user}/update_list_limit', 'updateListLimit')->name('users.update_list_limit');
+            Route::resource('admin/users', AdminUserController::class)->only(['index', 'show']);
         });
 
         //Admin lists
-        Route::group(['middleware' => ['role:admin|list_reader']], function () {
-            //Route::get('admin/lists', [AdminCheckListController::class, 'index'])->name('lists.index');
-            Route::resource('admin/lists', AdminCheckListController::class)->only(['index']);
-        });
+        Route::resource('admin/lists', AdminCheckListController::class)->only(['index']);
     });
 });
 

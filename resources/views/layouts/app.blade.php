@@ -39,17 +39,17 @@
                                 <a class="nav-link" href="{{route('lists.index')}}">Lists</a>
                             </li>
 
-                            @hasanyrole('admin|moderator|list_limiter|list_reader')
+                            @can('view', App\Http\Controllers\Admin\UserController::class)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('admin.users.index')}}">Admin users</a>
                                 </li>
-                            @endhasanyrole
+                            @endcan
 
-                            @hasanyrole('admin|list_reader')
+                            @can('index', App\Http\Controllers\Admin\CheckListController::class)
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('admin.lists.index')}}">Admin lists</a>
                                 </li>
-                            @endhasanyrole
+                            @endcan
 
                         @endif
                     </ul>
