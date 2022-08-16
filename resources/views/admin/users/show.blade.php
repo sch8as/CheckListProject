@@ -70,7 +70,11 @@
                 <label for="exampleInputPassword1" class="form-label" >Checklist limit</label>
                 <input type="number" class="form-control" id="exampleInputPassword1" name="checklist_limit" value="{{$user->checklist_limit}}">
             </div>
-
+            @if($user->can('have-unlimited-lists', App\Http\Controllers\CheckListController::class))
+                <div class="alert alert-info" role="alert">
+                    For administrative roles, the number of lists is not limited.
+                </div>
+            @endif
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
         <br>

@@ -21,7 +21,7 @@ class CheckListController extends Controller
             });
         }
 
-        //Фильтрация по столбцам list->user->name, list->user->email, list->check_lists.title, list->title
+        //Фильтрация по столбцам list->user->name, list->user->email, list->check_lists->title, list->title
         $filter = '';
         if ($request->filled('filter')) {
             $filter = $request->get('filter');
