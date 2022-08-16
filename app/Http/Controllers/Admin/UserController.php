@@ -69,8 +69,7 @@ class UserController extends Controller
         $this->authorize('update-list-limit', [self::class]);
 
         $user = Auth::user()->subUsers()->findOrFail($id);
-
-        $user->checklist_limit=$request->checklist_limit;
+        $user->checklist_limit = $request->checklist_limit;
         $user->save();
 
         return redirect()->route('admin.users.show', ['user' => $id]);

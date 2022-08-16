@@ -52,7 +52,7 @@
             @method('PATCH')
             @csrf
             <div class="mb-3 form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="is_banned" name="is_banned" {{($user->status == 0)?("checked"):("")}}>
+              <input class="form-check-input" type="checkbox" id="is_banned" name="is_banned" {{($user->status == App\Models\User::STATUS_BANNED)?("checked"):("")}}>
               <label class="form-check-label" for="flexSwitchCheckDefault">Is banned</label>
             </div>
 

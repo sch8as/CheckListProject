@@ -21,6 +21,7 @@ class CheckListController extends Controller
             });
         }
 
+        //Фильтрация по столбцам list->user->name, list->user->email, list->check_lists.title, list->title
         $filter = '';
         if ($request->filled('filter')) {
             $filter = $request->get('filter');
@@ -28,10 +29,10 @@ class CheckListController extends Controller
                 $query->whereHas('user', function($query) use ($filter) {
                     $query->where('name', 'like', "%$filter%")
                         ->orWhere('email', 'like', "%$filter%");
-                })->orWhere('check_lists.title', 'like', "%$filter%")->
-                orWhereHas('checkElements', function($query) use ($filter) {
+                })->orWhere('check_lists.title', 'like', "%$filter%")
+                    ->orWhereHas('checkElements', function($query) use ($filter) {
                         $query->where('title', 'like', "%$filter%");
-                    });
+                });
             });
         }
 
