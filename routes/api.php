@@ -21,7 +21,9 @@ use App\Http\Controllers\Api\AuthController;
 });*/
 
 Route::apiResource('lists', CheckListController::class)->middleware('auth:sanctum');
-Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
+
+Route::post('elements/update_checked/{element}', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked')->middleware('auth:sanctum');
+Route::resource('elements', CheckElementController::class)->only(['store', 'destroy'])->middleware('auth:sanctum');
 
 Route::post('/register',[AuthController::class,'register']);
 
