@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CheckListController;
+use App\Http\Controllers\Api\CheckElementController;
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,10 +16,15 @@ use App\Http\Controllers\Api\CheckListController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
-Route::apiResource('lists', CheckListController::class);
+Route::apiResource('lists', CheckListController::class)->middleware('auth:sanctum');
+Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
+
+Route::post('/register',[AuthController::class,'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
 
 //Auth::routes();
