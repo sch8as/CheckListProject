@@ -32,16 +32,15 @@ class CheckListController extends Controller
         $listsCount = Auth::user()->checkLists()->count();
 
 
-        if(!Auth::user()->can('have-unlimited-lists', [self::class])) {
-            if ($listsCount >= $limit) {
-                $note = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
-                return view('check_list.create', compact('note'));
-            }
+        if((!Auth::user()->can('have-unlimited-lists', [self::class])) && $listsCount >= $limit) {
+            $note = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
+            return view('check_list.create', compact('note'));
         }
 
-        $currentUserId = array("user_id" => Auth::id());
-        $request = array_merge($request->all(), $currentUserId);
-        $checkListModel->create($request);
+        $currentUserId = ["user_id" => Auth::id()];
+        $newCheckList = array_merge($request->all(), $currentUserId);
+
+        $checkListModel->create($newCheckList);
         return redirect()->route('lists.index');
     }
 
@@ -54,9 +53,7 @@ class CheckListController extends Controller
     public function update(Request $request, $id)
     {
         $list = Auth::user()->checkLists()->findOrFail($id);
-        $list->title=$request->title;
-        $list->description = $request->description;
-        $list->save();
+        $list->update($request->all());
         return redirect()->route('lists.index');
     }
 

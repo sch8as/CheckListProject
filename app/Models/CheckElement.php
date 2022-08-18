@@ -13,6 +13,6 @@ class CheckElement extends Model
 
     public function checkList()
     {
-        return $this->belongsTo('App\Models\CheckList');
+        return $this->belongsTo(CheckList::class);
     }
 }

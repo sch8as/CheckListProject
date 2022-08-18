@@ -24,7 +24,7 @@ class CheckElementController extends Controller
         $checked = $request->get('checked');
 
         $element = Auth::user()->checkElements()->findOrFail($id);
-        $element->checked=$checked;
+        $element->checked=$checked; //TODO Изменить на fill
         $element->save();
     }
 
