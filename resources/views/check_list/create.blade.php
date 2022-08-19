@@ -2,9 +2,9 @@
 
 @section('content')
     <h1>Create</h1>
-    @if (isset($note))
+    @if (isset($message))
         <div class="alert alert-danger">
-            {{ $note }}
+            {{ $message }}
         </div>
     @endif
     <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('lists.store') }}">

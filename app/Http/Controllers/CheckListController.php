@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\CheckList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\IndexCheckList;
+use App\Actions\ShowCheckList;
+use App\Actions\StoreCheckList;
+use App\Actions\UpdateCheckList;
+use App\Actions\DestroyCheckList;
 
 class CheckListController extends Controller
 {
-    public function index()
+    public function index(IndexCheckList $action)
     {
-        $checkLists = Auth::user()->checkLists()->orderBy('title')->get();
+        $checkLists = $action->execute();
         return view('check_list.index', compact('checkLists'));
     }
 
-    public function show($id)
+    public function show($id, ShowCheckList $action)
     {
-        $checkList = Auth::user()->checkLists()->findOrFail($id);
-        $checkElements = $checkList->checkElements()->get();
+        $checkList = $action->execute($id);
+        if($action->IsFailed()) { abort(404); }
+        $checkElements = $action->getCheckElements();
         return view('check_list/show', compact('checkList', 'checkElements'));
     }
 
@@ -26,21 +32,15 @@ class CheckListController extends Controller
         return view('check_list.create');
     }
 
-    public function store(CheckList $checkListModel, Request $request)
+    public function store(CheckList $checkListModel, Request $request, StoreCheckList $action)
     {
-        $limit = Auth::user()->checklist_limit;
-        $listsCount = Auth::user()->checkLists()->count();
+        $action->execute($request->all());
 
-
-        if((!Auth::user()->can('have-unlimited-lists', [self::class])) && $listsCount >= $limit) {
-            $note = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
-            return view('check_list.create', compact('note'));
+        if($action->IsFailed()) {
+            $message = $action->getMessage();
+            return view('check_list.create', compact('message'));
         }
 
-        $currentUserId = ["user_id" => Auth::id()];
-        $newCheckList = array_merge($request->all(), $currentUserId);
-
-        $checkListModel->create($newCheckList);
         return redirect()->route('lists.index');
     }
 
@@ -50,17 +50,17 @@ class CheckListController extends Controller
         return view('check_list.edit', compact('list'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, UpdateCheckList $action)
     {
-        $list = Auth::user()->checkLists()->findOrFail($id);
-        $list->update($request->all());
+        $action->execute($request->all(), $id);
+        if($action->IsFailed()) { abort(404); }
         return redirect()->route('lists.index');
     }
 
-    public function destroy($id)
+    public function destroy($id, DestroyCheckList $action)
     {
-        $list = Auth::user()->checkLists()->findOrFail($id);
-        $list->delete();
+        $action->execute($id);
+        if($action->IsFailed()) { abort(404); }
         return redirect()->route('lists.index');
     }
 }

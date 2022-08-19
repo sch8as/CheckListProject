@@ -7,98 +7,90 @@ use App\Http\Requests\StoreCheckListRequest;
 use App\Models\CheckList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\IndexCheckList;
+use App\Actions\ShowCheckList;
+use App\Actions\StoreCheckList;
+use App\Actions\UpdateCheckList;
+use App\Actions\DestroyCheckList;
 
 class CheckListController extends Controller
 {
 
-    public function index()
+    //TODO проверить actions и web controller
+
+    public function index(IndexCheckList $action)
     {
-        //dd(Auth::user());
-        $checkLists = Auth::user()->checkLists()->orderBy('title')->get();
-        //$checkLists = CheckList::orderBy('title')->get();
+        $checkLists = $action->execute();
         return response()->json([
             'status' => 200,
             'checkLists' => $checkLists
         ]);
     }
 
-    public function show($id)
+    public function show($id, ShowCheckList $action)
     {
-        $checkList = Auth::user()->checkLists()->find($id);
-
-        if(!$checkList) {
+        $checkList = $action->execute($id);
+        if($action->IsFailed()) {
             return response()->json([
                 'status' => false,
-                'message' => "Check list not found"
-            ], 404);
+                'message' => $action->getMessage()
+            ], 403); //TODO настроить эти коды
         }
-
-        $checkElements = $checkList->checkElements()->get();
-        //return view('check_list/show', compact('checkList', 'checkElements'));
+        $checkElements = $action->getCheckElements();
         return response()->json([
-            'status' => 200,
+            'status' => 200, //??????????
             'checkList' => $checkList,
             'checkElements' => $checkElements
         ]);
     }
 
-    public function store(StoreCheckListRequest $request)
+    public function store(StoreCheckListRequest $request, StoreCheckList $action)
     {
-        //dd($request->all());
+        $result = $action->execute($request->all());
 
-        $limit = Auth::user()->checklist_limit;
-        $listsCount = Auth::user()->checkLists()->count();
-
-
-        if((!Auth::user()->can('have-unlimited-lists', [self::class])) && $listsCount >= $limit) {
-            $message = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
+        if($action->IsFailed()) {
             return response()->json([
                 'status' => false,
-                'message' => $message
+                'message' => $action->getMessage()
             ], 403);
         }
 
-        $currentUserId = ["user_id" => Auth::id()];
-        //$currentUserId = ["user_id" => 1];
-        $newCheckList = array_merge($request->all(), $currentUserId);
-
-        $checkList =  CheckList::create($newCheckList);
         return response()->json([
             'status' => true,
             'message' => "Check list created successfully",
-            'checkList' => $checkList
+            'checkList' => $result
         ], 200);
     }
 
-    public function update(StoreCheckListRequest $request, $id)
+    public function update(StoreCheckListRequest $request, $id, UpdateCheckList $action)
     {
-        $checkList = Auth::user()->checkLists()->find($id);
-        if(!$checkList) {
+        $result = $action->execute($request->all(), $id);
+
+        if($action->IsFailed()) {
             return response()->json([
                 'status' => false,
-                'message' => "Check list not found"
-            ], 404);
+                'message' => $action->getMessage()
+            ], 403);
         }
 
-        $checkList->update($request->all());
         return response()->json([
             'status' => true,
             'message' => "Check list updated successfully",
-            'checkList' => $checkList
+            'checkList' => $result
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id, DestroyCheckList $action)
     {
-        $checkList = Auth::user()->checkLists()->find($id);
-        if(!$checkList) {
+        $action->execute($id);
+
+        if($action->IsFailed()) {
             return response()->json([
                 'status' => false,
-                'message' => "Check list not found"
-            ], 404);
+                'message' => $action->getMessage()
+            ], 403);
         }
-        //$checkList = CheckList::findOrFail($id);
-        $checkList->delete();
+
         return response()->json([
             'status' => true,
             'message' => "Check list deleted successfully"
