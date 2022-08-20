@@ -15,34 +15,24 @@ class CheckElementController extends Controller
     public function store(StoreCheckElementRequest $request, StoreCheckElement $action)
     {
         try {
-            $checkElement = $action->execute($request->all());
             return response()->json([
-                'status' => true,
                 'message' => "Check element created successfully",
-                'checkElement' => $checkElement
-            ], 200);
+                'checkElement' => $action->execute($request->all())
+            ]);
         } catch (ModelNotFoundException $e) { //TODO Переписать все подобным образом, убрать поля и методы в Action
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage()
-            ], $e->getCode());
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
     }
 
     public function updateChecked(UpdateCheckedCheckElementRequest $request, $id, UpdateCheckedCheckElement $action)
     {
         try {
-            $checkElement = $action->execute($request->all(), $id);
             return response()->json([
-                'status' => true,
                 'message' => "Check element updated successfully",
-                'checkElement' => $checkElement
-            ], 200);
+                'checkElement' => $action->execute($request->all(), $id)
+            ]);
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage()
-            ], $e->getCode());
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
     }
 
@@ -50,15 +40,9 @@ class CheckElementController extends Controller
     {
         try {
             $action->execute($id);
-            return response()->json([
-                'status' => true,
-                'message' => "Check element deleted successfully"
-            ], 200);
+            return response()->json([ 'message' => "Check element deleted successfully"]);
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage()
-            ], $e->getCode());
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
     }
 }

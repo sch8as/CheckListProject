@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCheckListRequest;
-use App\Models\CheckList;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Actions\DestroyCheckList;
 use App\Actions\IndexCheckList;
 use App\Actions\ShowCheckList;
 use App\Actions\StoreCheckList;
 use App\Actions\UpdateCheckList;
-use App\Actions\DestroyCheckList;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCheckListRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class CheckListController extends Controller
 {
@@ -21,79 +20,54 @@ class CheckListController extends Controller
     public function index(IndexCheckList $action)
     {
         $checkLists = $action->execute();
-        return response()->json([
-            'status' => 200,
-            'checkLists' => $checkLists
-        ]);
+        return response()->json([ 'checkLists' => $checkLists ]);
     }
 
     public function show($id, ShowCheckList $action)
     {
-        $checkList = $action->execute($id);
-        if($action->IsFailed()) {
-            return response()->json([
-                'status' => false,
-                'message' => $action->getMessage()
-            ], 403); //TODO настроить эти коды
+        try {
+            $checkList = $action->execute($id);
+            $checkElements = $action->getCheckElements();
+            return response()->json([ 'checkList' => $checkList, 'checkElements' => $checkElements ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
-        $checkElements = $action->getCheckElements();
-        return response()->json([
-            'status' => 200, //??????????
-            'checkList' => $checkList,
-            'checkElements' => $checkElements
-        ]);
     }
 
+    //TODO поправить остальные методы
     public function store(StoreCheckListRequest $request, StoreCheckList $action)
     {
-        $result = $action->execute($request->all());
+        $checkList = $action->execute($request->all());
 
-        if($action->IsFailed()) {
-            return response()->json([
-                'status' => false,
-                'message' => $action->getMessage()
-            ], 403);
+        if($action->limitIsExceeded()) {
+            return response()->json([ 'message' => $action->getMessage() ]);
         }
 
         return response()->json([
-            'status' => true,
             'message' => "Check list created successfully",
-            'checkList' => $result
-        ], 200);
+            'checkList' => $checkList
+        ]);
     }
 
     public function update(StoreCheckListRequest $request, $id, UpdateCheckList $action)
     {
-        $result = $action->execute($request->all(), $id);
-
-        if($action->IsFailed()) {
+        try {
             return response()->json([
-                'status' => false,
-                'message' => $action->getMessage()
-            ], 403);
+                'message' => "Check list updated successfully",
+                'checkList' => $action->execute($request->all(), $id)
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
-
-        return response()->json([
-            'status' => true,
-            'message' => "Check list updated successfully",
-            'checkList' => $result
-        ], 200);
     }
 
     public function destroy($id, DestroyCheckList $action)
     {
-        $action->execute($id);
-
-        if($action->IsFailed()) {
-            return response()->json([
-                'status' => false,
-                'message' => $action->getMessage()
-            ], 403);
+        try {
+            $action->execute($id);
+            return response()->json([ 'message' => "Check list deleted successfully" ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([ 'message' => $e->getMessage() ], $e->getCode());
         }
-
-        return response()->json([
-            'status' => true,
-            'message' => "Check list deleted successfully"
-        ], 200);
     }
 }

@@ -13,6 +13,7 @@ class CheckElementController extends Controller
     {
         $action->execute($request->all());
         return redirect()->route('lists.show', ['list' => $request->check_list_id]);
+        //TODO проверить при пустом значении title
     }
 
     public function updateChecked(Request $request, UpdateCheckedCheckElement $action)
@@ -22,7 +23,7 @@ class CheckElementController extends Controller
 
     public function destroy($id, DestroyCheckElement $action)
     {
-        $action->execute($id);
-        return redirect()->route('lists.show', ['list' => $action->getCheckListId()]); //TODO поменять list на checkList
+        $checkElement = $action->execute($id);
+        return redirect()->route('lists.show', ['list' => $checkElement->check_list_id]); //TODO поменять list на checkList
     }
 }

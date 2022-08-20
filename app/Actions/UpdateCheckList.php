@@ -12,13 +12,8 @@ class UpdateCheckList extends Action
     public function execute(array $data, $id)
     {
         $checkList = Auth::user()->checkLists()->find($id); //TODO Переделать в findOr
-        if(!$checkList) {
-            $this->failed = true;
-            $this->message = "Check list not found";
-            return null;
-        }
-
+        $this->CheckModel($checkList);
         $checkList->update($data);
-        return $checkList; //TODO добавить сообщение и при success
+        return $checkList;
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckList;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Actions\DestroyCheckList;
 use App\Actions\IndexCheckList;
 use App\Actions\ShowCheckList;
 use App\Actions\StoreCheckList;
 use App\Actions\UpdateCheckList;
-use App\Actions\DestroyCheckList;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckListController extends Controller
 {
@@ -22,7 +21,6 @@ class CheckListController extends Controller
     public function show($id, ShowCheckList $action)
     {
         $checkList = $action->execute($id);
-        if($action->IsFailed()) { abort(404); }
         $checkElements = $action->getCheckElements();
         return view('check_list/show', compact('checkList', 'checkElements'));
     }
@@ -32,11 +30,11 @@ class CheckListController extends Controller
         return view('check_list.create');
     }
 
-    public function store(CheckList $checkListModel, Request $request, StoreCheckList $action)
+    public function store(Request $request, StoreCheckList $action)
     {
         $action->execute($request->all());
 
-        if($action->IsFailed()) {
+        if($action->limitIsExceeded()) {
             $message = $action->getMessage();
             return view('check_list.create', compact('message'));
         }
@@ -53,14 +51,12 @@ class CheckListController extends Controller
     public function update(Request $request, $id, UpdateCheckList $action)
     {
         $action->execute($request->all(), $id);
-        if($action->IsFailed()) { abort(404); }
         return redirect()->route('lists.index');
     }
 
     public function destroy($id, DestroyCheckList $action)
     {
         $action->execute($id);
-        if($action->IsFailed()) { abort(404); }
         return redirect()->route('lists.index');
     }
 }
