@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckElement;
 
+use App\Actions\Action;
 use App\Models\CheckElement;
 use Illuminate\Support\Facades\Auth;
 //TODO почистить use
 
-class StoreCheckElement extends Action
+class StoreCheckElementAction extends Action
 {
     public function execute(array $data)
     {

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckList;
 
+use App\Actions\Action;
 use App\Models\CheckList;
 use App\Http\Controllers\CheckListController;
 use Illuminate\Support\Facades\Auth;
 
-class StoreCheckList extends Action
+class StoreCheckListAction extends Action
 {
     protected $limitExceeded = false;
     protected $message = "";

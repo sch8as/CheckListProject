@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckList;
 
-use App\Models\CheckList;
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Collection;
 
-class IndexCheckList extends Action
+class IndexCheckListAction extends Action
 {
     public function execute()
     {

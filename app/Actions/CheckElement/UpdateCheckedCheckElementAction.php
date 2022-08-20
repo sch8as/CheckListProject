@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckElement;
 
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 //TODO почистить use
 
-class UpdateCheckedCheckElement extends Action
+class UpdateCheckedCheckElementAction extends Action
 {
     public function execute(array $data, $id)
     {

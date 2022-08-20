@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckList;
 
-use App\Models\CheckList;
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Collection;
-use App\Http\Controllers\CheckListController;
 
-class UpdateCheckList extends Action
+class UpdateCheckListAction extends Action
 {
     public function execute(array $data, $id)
     {

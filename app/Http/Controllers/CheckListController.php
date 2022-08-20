@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\DestroyCheckList;
-use App\Actions\IndexCheckList;
-use App\Actions\ShowCheckList;
-use App\Actions\StoreCheckList;
-use App\Actions\UpdateCheckList;
+use App\Actions\CheckList\DestroyCheckListAction;
+use App\Actions\CheckList\IndexCheckListAction;
+use App\Actions\CheckList\ShowCheckListAction;
+use App\Actions\CheckList\StoreCheckListAction;
+use App\Actions\CheckList\UpdateCheckListAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckListController extends Controller
 {
-    public function index(IndexCheckList $action)
+    public function index(IndexCheckListAction $action)
     {
         $checkLists = $action->execute();
         return view('check_list.index', compact('checkLists'));
     }
 
-    public function show($id, ShowCheckList $action)
+    public function show($id, ShowCheckListAction $action)
     {
         $checkList = $action->execute($id);
         $checkElements = $action->getCheckElements();
@@ -30,7 +30,7 @@ class CheckListController extends Controller
         return view('check_list.create');
     }
 
-    public function store(Request $request, StoreCheckList $action)
+    public function store(Request $request, StoreCheckListAction $action)
     {
         $action->execute($request->all());
 
@@ -48,13 +48,13 @@ class CheckListController extends Controller
         return view('check_list.edit', compact('list'));
     }
 
-    public function update(Request $request, $id, UpdateCheckList $action)
+    public function update(Request $request, $id, UpdateCheckListAction $action)
     {
         $action->execute($request->all(), $id);
         return redirect()->route('lists.index');
     }
 
-    public function destroy($id, DestroyCheckList $action)
+    public function destroy($id, DestroyCheckListAction $action)
     {
         $action->execute($id);
         return redirect()->route('lists.index');

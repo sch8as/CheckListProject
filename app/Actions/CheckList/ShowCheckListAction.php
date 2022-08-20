@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckList;
 
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 
-class ShowCheckList extends Action
+class ShowCheckListAction extends Action
 {
     protected $checkElements;
 

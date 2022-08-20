@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckElement;
 
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 
-class DestroyCheckElement extends Action
+class DestroyCheckElementAction extends Action
 {
     public function execute($id)
     {

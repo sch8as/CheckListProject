@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\CheckList;
 
+use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 
-class DestroyCheckList extends Action
+class DestroyCheckListAction extends Action
 {
     public function execute($id)
     {

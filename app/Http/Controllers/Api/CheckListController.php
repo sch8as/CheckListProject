@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\DestroyCheckList;
-use App\Actions\IndexCheckList;
-use App\Actions\ShowCheckList;
-use App\Actions\StoreCheckList;
-use App\Actions\UpdateCheckList;
+use App\Actions\CheckList\DestroyCheckListAction;
+use App\Actions\CheckList\IndexCheckListAction;
+use App\Actions\CheckList\ShowCheckListAction;
+use App\Actions\CheckList\StoreCheckListAction;
+use App\Actions\CheckList\UpdateCheckListAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCheckListRequest;
 
@@ -15,13 +15,13 @@ class CheckListController extends Controller
 
     //TODO проверить actions и web controller
 
-    public function index(IndexCheckList $action)
+    public function index(IndexCheckListAction $action)
     {
         $checkLists = $action->execute();
         return response()->json([ 'checkLists' => $checkLists ]);
     }
 
-    public function show($id, ShowCheckList $action)
+    public function show($id, ShowCheckListAction $action)
     {
 
         $checkList = $action->execute($id);
@@ -30,7 +30,7 @@ class CheckListController extends Controller
     }
 
     //TODO поправить остальные методы
-    public function store(StoreCheckListRequest $request, StoreCheckList $action)
+    public function store(StoreCheckListRequest $request, StoreCheckListAction $action)
     {
         $checkList = $action->execute($request->all());
 
@@ -44,7 +44,7 @@ class CheckListController extends Controller
         ]);
     }
 
-    public function update(StoreCheckListRequest $request, $id, UpdateCheckList $action)
+    public function update(StoreCheckListRequest $request, $id, UpdateCheckListAction $action)
     {
         return response()->json([
             'message' => "Check list updated successfully",
@@ -52,7 +52,7 @@ class CheckListController extends Controller
         ]);
     }
 
-    public function destroy($id, DestroyCheckList $action)
+    public function destroy($id, DestroyCheckListAction $action)
     {
         $action->execute($id);
         return response()->json([ 'message' => "Check list deleted successfully" ]);
