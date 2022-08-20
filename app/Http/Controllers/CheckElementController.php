@@ -2,39 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckElement;
+use App\Actions\DestroyCheckElement;
+use App\Actions\StoreCheckElement;
+use App\Actions\UpdateCheckedCheckElement;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CheckElementController extends Controller
 {
-
-
-    public function store(CheckElement $checkElementModel, Request $request)
+    public function store(Request $request, StoreCheckElement $action)
     {
-        $checkList = Auth::user()->checkLists()->findOrFail($request->check_list_id);
-
-        $checkElementModel->create($request->all());
+        $action->execute($request->all());
         return redirect()->route('lists.show', ['list' => $request->check_list_id]);
     }
 
-    public function updateChecked(Request $request)
+    public function updateChecked(Request $request, UpdateCheckedCheckElement $action)
     {
-        $id = $request->get('id');
-        $checked = $request->get('checked');
-
-        $element = Auth::user()->checkElements()->findOrFail($id);
-        $element->checked=$checked; //TODO Изменить на fill
-        $element->save();
+        $action->execute($request->all(), $request->get("id"));
     }
 
-    public function destroy($id)
+    public function destroy($id, DestroyCheckElement $action)
     {
-        $element = Auth::user()->checkElements()->findOrFail($id);
-
-        $checkListId = $element->check_list_id;
-
-        $element->delete();
-        return redirect()->route('lists.show', ['list' => $checkListId]);
+        $action->execute($id);
+        return redirect()->route('lists.show', ['list' => $action->getCheckListId()]); //TODO поменять list на checkList
     }
 }
