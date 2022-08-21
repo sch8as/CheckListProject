@@ -58,7 +58,7 @@ class UserController extends Controller
         $this->authorize('update-status', [self::class]);
 
         $user = Auth::user()->subUsers()->findOrFail($id);
-        $user->status = $request->boolean('is_banned')?(User::STATUS_BANNED):(User::STATUS_OK); //TODO Изменить на fill
+        $user->status = $request->boolean('is_banned')?(User::STATUS_BANNED):(User::STATUS_OK);
         $user->save();
 
         return redirect()->route('admin.users.show', ['user' => $id]);
@@ -69,7 +69,7 @@ class UserController extends Controller
         $this->authorize('update-list-limit', [self::class]);
 
         $user = Auth::user()->subUsers()->findOrFail($id);
-        $user->checklist_limit = $request->checklist_limit; //TODO Изменить на fill
+        $user->checklist_limit = $request->checklist_limit;
         $user->save();
 
         return redirect()->route('admin.users.show', ['user' => $id]);
