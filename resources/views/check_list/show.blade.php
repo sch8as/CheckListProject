@@ -53,7 +53,7 @@
         <div class="row">
             <input type="hidden" id="text" name="check_list_id" class="form-control mb-3" value="{{$checkList->id}}" >
             <div class="col">
-                <input type="text" id="title" name="title" class="form-control mb-3" >
+                <input type="text" id="title" name="title" required="" class="form-control mb-3" >
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary mb-2">Add</button>

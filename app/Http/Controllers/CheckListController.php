@@ -7,6 +7,7 @@ use App\Actions\CheckList\IndexCheckListAction;
 use App\Actions\CheckList\ShowCheckListAction;
 use App\Actions\CheckList\StoreCheckListAction;
 use App\Actions\CheckList\UpdateCheckListAction;
+use App\Http\Requests\StoreCheckListRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +31,7 @@ class CheckListController extends Controller
         return view('check_list.create');
     }
 
-    public function store(Request $request, StoreCheckListAction $action)
+    public function store(StoreCheckListRequest $request, StoreCheckListAction $action)
     {
         $action->execute($request->all());
 
@@ -48,7 +49,7 @@ class CheckListController extends Controller
         return view('check_list.edit', compact('list'));
     }
 
-    public function update(Request $request, $id, UpdateCheckListAction $action)
+    public function update(StoreCheckListRequest $request, $id, UpdateCheckListAction $action)
     {
         $action->execute($request->all(), $id);
         return redirect()->route('lists.index');
