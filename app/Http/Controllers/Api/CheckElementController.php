@@ -14,6 +14,7 @@ class CheckElementController extends Controller
     public function store(StoreCheckElementRequest $request, StoreCheckElementAction $action)
     {
         return response()->json([
+            'state' => true,
             'message' => "Check element created successfully",
             'check_element' => $action->execute($request->all())
         ]);
@@ -22,6 +23,7 @@ class CheckElementController extends Controller
     public function updateChecked(UpdateCheckedCheckElementRequest $request, $id, UpdateCheckedCheckElementAction $action)
     {
         return response()->json([
+            'state' => true,
             'message' => "Check element updated successfully",
             'check_element' => $action->execute($request->all(), $id)
         ]);
@@ -30,6 +32,6 @@ class CheckElementController extends Controller
     public function destroy($id, DestroyCheckElementAction $action)
     {
         $action->execute($id);
-        return response()->json([ 'message' => "Check element deleted successfully"]);
+        return response()->json([ 'state' => true, 'message' => "Check element deleted successfully"]);
     }
 }

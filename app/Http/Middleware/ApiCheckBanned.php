@@ -21,6 +21,7 @@ class ApiCheckBanned
             //$request->session()->invalidate();
             //$request->session()->regenerateToken();
             return response()->json([
+                'state' => false,
                 'error' => 'Your Account is suspended, please contact Admin.',
             ], 401);
         }

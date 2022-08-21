@@ -15,7 +15,10 @@ class AuthController extends Controller
         $validator = $validatorAction->execute($request->all());
 
         if($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()]);
+            return response()->json([
+                'state' => false,
+                'errors'=>$validator->errors()
+            ]);
         }
 
         $user = $createAction->execute($request->all());
@@ -23,6 +26,7 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
+            'state' => true,
             'access_token' => $token,
             'token_type' => 'Bearer',
         ]);
@@ -31,6 +35,7 @@ class AuthController extends Controller
     public function login(Request $request){
         if (!\Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
+                'state' => false,
                 'message' => 'Login information is invalid.'
             ], 401);
         }
@@ -39,6 +44,7 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
+            'state' => true,
             'access_token' => $token,
             'token_type' => 'Bearer',
         ]);
