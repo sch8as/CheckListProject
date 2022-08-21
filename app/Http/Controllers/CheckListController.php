@@ -8,7 +8,6 @@ use App\Actions\CheckList\ShowCheckListAction;
 use App\Actions\CheckList\StoreCheckListAction;
 use App\Actions\CheckList\UpdateCheckListAction;
 use App\Http\Requests\StoreCheckListRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckListController extends Controller

@@ -20,13 +20,15 @@ use App\Http\Controllers\Api\AuthController;
     return $request->user();
 });*/
 
-Route::apiResource('lists', CheckListController::class)->middleware('auth:sanctum');
+Route::group(['middleware' => ['auth:sanctum']], function($router) {
 
-Route::post('elements/update_checked/{element}', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked')->middleware('auth:sanctum');
-Route::resource('elements', CheckElementController::class)->only(['store', 'destroy'])->middleware('auth:sanctum');
+    //Lists
+    Route::apiResource('lists', CheckListController::class);
+
+    //Elements
+    Route::post('elements/update_checked/{element}', [CheckElementController::class, 'updateChecked'])->name('elements.update_checked');
+    Route::resource('elements', CheckElementController::class)->only(['store', 'destroy']);
+});
 
 Route::post('/register',[AuthController::class,'register']);
-
 Route::post('/login', [AuthController::class, 'login']);
-
-//Auth::routes();
