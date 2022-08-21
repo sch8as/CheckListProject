@@ -18,7 +18,7 @@ class StoreCheckListAction extends Action
         $listsCount = Auth::user()->checkLists()->count();
 
         // TODO Исправить класс политики
-        if ((Auth::user()->can('have-unlimited-lists', [CheckListController::class])) && ($listsCount >= $limit)){
+        if ((Auth::user()->can('have-unlimited-lists', [CheckListController::class])) || ($listsCount < $limit)){
             $newCheckList = array_merge($data, ["user_id" => Auth::id()]);
             return CheckList::create($newCheckList);
         }else{

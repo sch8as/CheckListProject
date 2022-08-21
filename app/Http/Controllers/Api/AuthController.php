@@ -5,13 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Actions\Auth\CreateRegisterAction;
 use App\Actions\Auth\GetValidatorRegisterAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Auth\RegisterController;
 
 class AuthController extends Controller
 {
