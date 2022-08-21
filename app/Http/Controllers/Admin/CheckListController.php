@@ -15,6 +15,7 @@ class CheckListController extends Controller
 
         $query = CheckList::with('user')->with('checkElements');
 
+        //TODO сделать политикой
         if(!Auth::user()->hasRole('admin')) {
             $query->whereHas('user', function($query) {
                 $query->doesntHave('roles');

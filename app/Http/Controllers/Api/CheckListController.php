@@ -12,13 +12,10 @@ use App\Http\Requests\StoreCheckListRequest;
 
 class CheckListController extends Controller
 {
-
-    //TODO проверить actions и web controller
-
     public function index(IndexCheckListAction $action)
     {
         $checkLists = $action->execute();
-        return response()->json([ 'checkLists' => $checkLists ]);
+        return response()->json([ 'check_lists' => $checkLists ]);
     }
 
     public function show($id, ShowCheckListAction $action)
@@ -26,10 +23,9 @@ class CheckListController extends Controller
 
         $checkList = $action->execute($id);
         $checkElements = $action->getCheckElements();
-        return response()->json([ 'checkList' => $checkList, 'checkElements' => $checkElements ]);
+        return response()->json([ 'check_list' => $checkList, 'check_elements' => $checkElements ]);
     }
 
-    //TODO поправить остальные методы
     public function store(StoreCheckListRequest $request, StoreCheckListAction $action)
     {
         $checkList = $action->execute($request->all());
@@ -40,7 +36,7 @@ class CheckListController extends Controller
 
         return response()->json([
             'message' => "Check list created successfully",
-            'checkList' => $checkList
+            'check_list' => $checkList
         ]);
     }
 
@@ -48,7 +44,7 @@ class CheckListController extends Controller
     {
         return response()->json([
             'message' => "Check list updated successfully",
-            'checkList' => $action->execute($request->all(), $id)
+            'check_list' => $action->execute($request->all(), $id)
         ]);
     }
 

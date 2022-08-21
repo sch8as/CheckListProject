@@ -15,15 +15,15 @@ class CheckElementController extends Controller
     {
         return response()->json([
             'message' => "Check element created successfully",
-            'checkElement' => $action->execute($request->all())
-        ]); //TODO Переписать все подобным образом, убрать поля и методы в Action
+            'check_element' => $action->execute($request->all())
+        ]);
     }
 
     public function updateChecked(UpdateCheckedCheckElementRequest $request, $id, UpdateCheckedCheckElementAction $action)
     {
         return response()->json([
             'message' => "Check element updated successfully",
-            'checkElement' => $action->execute($request->all(), $id)
+            'check_element' => $action->execute($request->all(), $id)
         ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Actions\CheckElement;
 
 use App\Actions\Action;
 use Illuminate\Support\Facades\Auth;
-//TODO почистить use
 
 class UpdateCheckedCheckElementAction extends Action
 {
@@ -12,7 +11,7 @@ class UpdateCheckedCheckElementAction extends Action
     {
         $checked = $data['checked'];
         $checkElement = Auth::user()->checkElements()->find($id);
-        $this->CheckModel($checkElement);
+        $this->checkModel($checkElement);
         $checkElement->checked=$checked; //TODO Изменить на fill
         $checkElement->save();
         return $checkElement;

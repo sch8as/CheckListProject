@@ -10,7 +10,7 @@ class DestroyCheckListAction extends Action
     public function execute($id)
     {
         $checkList = Auth::user()->checkLists()->find($id);
-        $this->CheckModel($checkList);
+        $this->checkModel($checkList);
         $checkList->delete();
         return $checkList;
     }

@@ -44,8 +44,8 @@ class CheckListController extends Controller
 
     public function edit($id)
     {
-        $list = Auth::user()->checkLists()->findOrFail($id);
-        return view('check_list.edit', compact('list'));
+        $checkList = Auth::user()->checkLists()->findOrFail($id);
+        return view('check_list.edit', compact('checkList'));
     }
 
     public function update(StoreCheckListRequest $request, $id, UpdateCheckListAction $action)

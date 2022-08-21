@@ -12,7 +12,7 @@ class ShowCheckListAction extends Action
     public function execute($id)
     {
         $checkList = Auth::user()->checkLists()->find($id);
-        $this->CheckModel($checkList);
+        $this->checkModel($checkList);
         $this->checkElements = $checkList->checkElements()->get();
         return $checkList;
     }
