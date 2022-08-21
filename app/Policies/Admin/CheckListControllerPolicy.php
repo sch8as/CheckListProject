@@ -25,4 +25,9 @@ class CheckListControllerPolicy
         //return Response::deny('deny');
         return $user->hasRole('admin|list_reader');
     }
+
+    public function watchAdministrationLists(User $user)
+    {
+        return $user->hasRole('admin');
+    }
 }
