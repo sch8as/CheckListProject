@@ -2,37 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\Auth\CreateRegisterAction;
+use App\Actions\Auth\GetValidatorRegisterAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Auth\RegisterController;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request, GetValidatorRegisterAction $validatorAction, CreateRegisterAction $createAction)
+    {
+        $validator = $validatorAction->execute($request->all());
 
-        //TODO валидировать в RegisterAuthRequest
-
-        $rules = [
-            'name'=>'required|string',
-            'email'=>'required|string|email|unique:users',
-            'password'=>'required|min:8'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
         if($validator->fails()) {
             return response()->json(['errors'=>$validator->errors()]);
         }
 
-        $post_data = $request->all();
-
-        $user = User::create([
-            'name' => $post_data['name'],
-            'email' => $post_data['email'],
-            'password' => Hash::make($post_data['password']),
-        ]);
+        $user = $createAction->execute($request->all());
 
         $token = $user->createToken('authToken')->plainTextToken;
 
