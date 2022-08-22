@@ -18,8 +18,8 @@ class StoreCheckListAction extends Action
         $listsCount = Auth::user()->checkLists()->count();
 
         if ((Auth::user()->can('have-unlimited-lists', [CheckListController::class])) || ($listsCount < $limit)){
-            $checkList = array_merge($data, ["user_id" => Auth::id()]);
-            return CheckList::create($checkList);
+            $checkListData = array_merge($data, ["user_id" => Auth::id()]);
+            return CheckList::create($checkListData);
         }else{
             $this->limitExceeded = true;
             $this->message = "Limit (" . $limit . ") is exceeded. The list cannot be added.";
