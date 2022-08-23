@@ -5,22 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Actions\Auth\CreateRegisterAction;
 use App\Actions\Auth\GetValidatorRegisterAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function register(Request $request, GetValidatorRegisterAction $validatorAction, CreateRegisterAction $createAction)
+    public function register(RegisterAuthRequest $request, CreateRegisterAction $createAction)
     {
-        $validator = $validatorAction->execute($request->all());
-
-        if($validator->fails()) {
-            return response()->json([
-                'state' => false,
-                'errors'=>$validator->errors()
-            ]);
-        }
-
         $user = $createAction->execute($request->all());
 
         $token = $user->createToken('authToken')->plainTextToken;

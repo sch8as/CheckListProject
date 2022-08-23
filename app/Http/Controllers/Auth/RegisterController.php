@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\CreateRegisterAction;
-use App\Actions\Auth\GetValidatorRegisterAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterAuthRequest;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -51,8 +49,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $action = new GetValidatorRegisterAction();
-        return $action->execute($data);
+        $registerAuthRequestInstance = new RegisterAuthRequest;
+        return Validator::make($data, $registerAuthRequestInstance->rules());
     }
 
     /**
