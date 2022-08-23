@@ -9,13 +9,19 @@ use App\Actions\CheckList\StoreCheckListAction;
 use App\Actions\CheckList\UpdateCheckListAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCheckListRequest;
+use App\Http\Resources\CheckElementResourceCollection;
+use App\Http\Resources\CheckListResource;
+use App\Http\Resources\CheckListResourceCollection;
 
 class CheckListController extends Controller
 {
     public function index(IndexCheckListAction $action)
     {
         $checkLists = $action->execute();
-        return response()->json([ 'state' => true, 'check_lists' => $checkLists ]);
+        return response()->json([
+            'state' => true,
+            'check_lists' => new CheckListResourceCollection($checkLists)
+        ]);
     }
 
     public function show($id, ShowCheckListAction $action)
@@ -23,7 +29,11 @@ class CheckListController extends Controller
 
         $checkList = $action->execute($id);
         $checkElements = $action->getCheckElements();
-        return response()->json([ 'state' => true, 'check_list' => $checkList, 'check_elements' => $checkElements ]);
+        return response()->json([
+            'state' => true,
+            'check_list' => new CheckListResource($checkList),
+            'check_elements' => new CheckElementResourceCollection($checkElements)
+        ]);
     }
 
     public function store(StoreCheckListRequest $request, StoreCheckListAction $action)
@@ -37,7 +47,7 @@ class CheckListController extends Controller
         return response()->json([
             'state' => true,
             'message' => "Check list created successfully",
-            'check_list' => $checkList
+            'check_list' => new CheckListResource($checkList)
         ]);
     }
 
@@ -46,7 +56,7 @@ class CheckListController extends Controller
         return response()->json([
             'state' => true,
             'message' => "Check list updated successfully",
-            'check_list' => $action->execute($request->all(), $id)
+            'check_list' => new CheckListResource($action->execute($request->all(), $id))
         ]);
     }
 

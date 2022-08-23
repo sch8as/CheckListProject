@@ -8,6 +8,7 @@ use App\Actions\CheckElement\UpdateCheckedCheckElementAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCheckElementRequest;
 use App\Http\Requests\UpdateCheckedCheckElementRequest;
+use App\Http\Resources\CheckElementResource;
 
 class CheckElementController extends Controller
 {
@@ -16,7 +17,7 @@ class CheckElementController extends Controller
         return response()->json([
             'state' => true,
             'message' => "Check element created successfully",
-            'check_element' => $action->execute($request->all())
+            'check_element' => new CheckElementResource($action->execute($request->all()))
         ]);
     }
 
@@ -25,7 +26,7 @@ class CheckElementController extends Controller
         return response()->json([
             'state' => true,
             'message' => "Check element updated successfully",
-            'check_element' => $action->execute($request->all(), $id)
+            'check_element' => new CheckElementResource($action->execute($request->all(), $id))
         ]);
     }
 
