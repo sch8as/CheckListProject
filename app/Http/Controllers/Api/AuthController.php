@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\Auth\CreateRegisterAction;
-use App\Actions\Auth\GetValidatorRegisterAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginAuthRequest;
 use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request){
+    public function login(LoginAuthRequest $request){
         if (!\Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'state' => false,
